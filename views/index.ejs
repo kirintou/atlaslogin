@@ -93,10 +93,6 @@
             <input type="text" id="name" name="name" >
             <label for="email">Email Id:</label>
             <input type="email" id="email" name="email" >
-            <label for="mobile">Mobile No:</label>
-            <input type="tel" id="mobile" name="mobile" pattern="[0-9]{10}">
-            <label for="age">Age:</label>
-            <input type="number" id="age" name="age" >
             <button type="submit">Submit</button>
         </form>
         <% if (message) { %>
@@ -110,18 +106,12 @@
         function validateForm() {
             var name = document.getElementById("name").value;
             var email = document.getElementById("email").value;
-            var mobile = document.getElementById("mobile").value;
-            var age = document.getElementById("age").value;
 
             if (name === "" || email === "" || mobile === "" || age === "") {
                 alert("Please fill out all fields.");
                 return false;
             }
 
-            if (!/^[0-9]{10}$/.test(mobile)) {
-                alert("Please enter a valid 10-digit mobile number.");
-                return false;
-            }
 
             return true;
         }

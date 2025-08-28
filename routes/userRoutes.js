@@ -21,8 +21,6 @@ router.post('/user', async (req, res) => {
     const newUser = new User({
       name: req.body.name,
       email: req.body.email,
-      mobile: req.body.mobile,
-      age: req.body.age,
     });
     await newUser.save();
     res.render('index', { message: 'User data saved successfully!', error: null, users: await User.find() });
