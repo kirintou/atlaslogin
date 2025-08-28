@@ -4,31 +4,69 @@ const express = require('express');
 const User = require('../model/model');
 const router = express.Router();
 
-// GET route for the home page
-router.get('/', async (req, res) => {
-  try {
-    const users = await User.find();
-    res.render('index', { message: null, error: null, users });
-  } catch (err) {
-    console.error('Error fetching user data:', err);
-    res.status(500).render('index', { error: 'Error fetching user data', users: [] });
-  }
+
+
+// Showing home page
+router.get("/", async (req, res) => {
+    res.render("home");
 });
 
-// POST route for adding a user
-router.post('/user', async (req, res) => {
-  try {
-    const newUser = new User({
-      name: req.body.name,
-      email: req.body.email,
-    });
-    await newUser.save();
-    res.render('index', { message: 'User data saved successfully!', error: null, users: await User.find() });
-  } catch (err) {
-    console.error('Error saving user data:', err);
-    res.status(500).render('index', { error: 'Error saving user data', message: null, users: [] });
-  }
+// Showing secret page
+router.get("/secret", isLoggedIn, async (req, res) => {
+    res.render("secret");
 });
+
+// Showing register form
+router.get("/register", async (req, res) => {
+    res.render("register");
+});
+
+// Handling user signup
+router.post("/register", async (req, res) => {
+    const user = await User.create({
+        username: req.body.username,
+        password: req.body.password
+    });
+
+    return res.status(200).json(user);
+});
+
+// Showing login form
+router.get("/login", async (req, res) => {
+    res.render("login");
+});
+
+// Handling user login
+router.post("/login", async (req, res) => {
+    try {
+        const user = await User.findOne({ username: req.body.username });
+        if (user) {
+            const result = req.body.password === user.password;
+            if (result) {
+                res.render("secret");
+            } else {
+                res.status(400).json({ error: "password doesn't match" });
+            }
+        } else {
+            res.status(400).json({ error: "User doesn't exist" });
+        }
+    } catch (error) {
+        res.status(400).json({ error });
+    }
+});
+
+router.get("/logout", async (req, res) => {
+    req.logout(function (err) {
+        if (err) { return next(err); }
+        res.redirect('/');
+    });
+});
+
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated()) return next();
+    res.redirect("/login");
+}
+
 
 
 module.exports = router;
