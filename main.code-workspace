@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.associations": {
+		},
+		"git.autoRepositoryDetection": false,
+		"git.enabled": true,
+		"git.blame.editorDecoration.enabled": true
+	}
+}
