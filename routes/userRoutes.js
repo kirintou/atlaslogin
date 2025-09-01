@@ -23,12 +23,18 @@ router.get("/register", async (req, res) => {
 
 // Handling user signup
 router.post("/register", async (req, res) => {
-    const user = await User.create({
-        username: req.body.username,
-        password: req.body.password
-    });
-
-    return res.status(200).json(user);
+    User.findOne({username: req.body.username }).then((user)=>{
+        if(user){
+            return res.status(400).json({username:"a user has already registerd with this"});
+        } else {
+            const newuser = new User({
+            username: req.body.username,
+            password: req.body.password
+        });
+        newuser.save()
+    return res.status(200).json(newuser);
+    }
+});
 });
 
 // Showing login form
