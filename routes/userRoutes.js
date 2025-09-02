@@ -4,6 +4,7 @@ const express = require('express');
 const User = require('../model/model');
 const router = express.Router();
 
+const mongoose = require('mongoose');
 
 
 // Showing home page
@@ -33,6 +34,12 @@ router.post("/register", async (req, res) => {
                 password: req.body.password
             });
             newuser.save()
+            .then(user => {
+            console.log('User created:', user);
+            })
+            .catch(error => {
+                console.error('Error creating user:', error);
+            });
         return res.status(200).json(newuser);
         }
     } catch (error) {
