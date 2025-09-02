@@ -74,7 +74,7 @@ router.post("/login", async (req, res) => {
 });
 
 router.get("/logout", async (req, res) => {
-    req.logout(function (err) {
+    (function (err) {
         if (err) { return next(err); }
         res.redirect(window.location.assign('/'));
     });
